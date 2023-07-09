@@ -1,8 +1,13 @@
 applet/node_modules
 applet/build
+
 blockchain/node_modules
 blockchain/artifacts
 blockchain/cache
 blockchain/deployments
 blockchain/deployments.json
+
+bike/node_modules
+bike/dist
+
 **/.env

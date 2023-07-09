@@ -25,6 +25,8 @@ let lineCount: i32 = 0;
 export function handle_data(rid: i32): i32 {
   log("New ride data received!");
   const deviceMessage = GetDataByRID(rid);
+  log("Payload: " + deviceMessage);
+  
   const payload = getPayloadValue(deviceMessage);
 
   const bike_owner = getStringField(payload, "bike_owner");
