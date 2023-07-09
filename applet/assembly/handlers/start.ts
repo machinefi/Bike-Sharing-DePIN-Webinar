@@ -1,10 +1,6 @@
-import { GetDataByRID, Log } from "@w3bstream/wasm-sdk";
+import { handle_data, log } from "./erc20";
 
 export function start(rid: i32): i32 {
-  Log("Hello World!");
-
-  const deviceMessage = GetDataByRID(rid);
-  Log("device message: " + deviceMessage);
-
-  return 0;
+  log("----------\n");
+  return handle_data(rid);
 }

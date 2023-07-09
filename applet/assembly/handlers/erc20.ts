@@ -1,63 +1,74 @@
-import { GetDataByRID, JSON, QuerySQL, Log, SendTx } from "@w3bstream/wasm-sdk";
-import { String } from "@w3bstream/wasm-sdk/assembly/sql";
+import { GetDataByRID, Log, SendTx } from "@w3bstream/wasm-sdk";
 
 import { buildTxData } from "../utils/build-tx";
-import { getField, getPayloadValue } from "../utils/payload-parser";
-import { validateField } from "../utils/message-validation";
+import { getIntegerField, getPayloadValue, getStringField } from "../utils/payload-parser";
 
 const MINT_FUNCTION_ADDR = "40c10f19";
 const CHAIN_ID = 4690;
-const TOKEN_CONTRACT_ADDRESS = "<YOUR_CONTRACT_ADDRESS>";
-const TOKEN_AMOUNT = "1";
+const TOKEN_CONTRACT_ADDRESS = "0xaDDda062F058f943721590B90Fc7219fbB7CDc9d";
+const WEIGHT_DISTANCE = 0.001; // Pay 1 token every 1km
+const WEIGHT_DURATION = 0.005; // Pay 1 token every 3 minutes
+
+// This global variable counts each line logged to the console
+let lineCount: i32 = 0;
+
+/*
+* Each time a new ride is completed, the device sends a message 
+* to the W3bstream applet that looks like this:
+* {
+*   "bike_owner": "0xabcd...",
+*   "ride_start": "123456789",
+*   "ride_duration": 12345,
+*   "ride_distance": 12345,
+*/
 
 export function handle_data(rid: i32): i32 {
-  Log("Hello W3bstream!");
+  log("New ride data received!");
   const deviceMessage = GetDataByRID(rid);
-  Log("Device message: " + deviceMessage);
-
   const payload = getPayloadValue(deviceMessage);
 
-  validateField<JSON.Str>(payload, "deviceId");
-  const deviceId = getField<JSON.Str>(payload, "deviceId");
-  verifyDeviceRegistered(deviceId!.valueOf());
+  const bike_owner = getStringField(payload, "bike_owner");
+  const ride_start = getStringField(payload, "ride_start");
+  const ride_duration = getIntegerField(payload, "ride_duration");
+  const ride_distance = getIntegerField(payload, "ride_distance");
 
-  const ownerAddress = findOwnerAddress(deviceId!.valueOf());
+  if (
+    bike_owner === null || 
+    ride_start === null || 
+    ride_duration === null || 
+    ride_distance === null) {
+    log("Invalid payload, fields cannot be null");
+    return 1;
+  }
 
-  Log("Owner address: " + ownerAddress);
-  Log("Sending tokens to owner address...");
+  log("Bike owner address: " + bike_owner);
+  log("Ride start: " + ride_start);
+  log("Ride duration: " + ride_duration.toString() + " seconds")
+  log("Ride distance: " + ride_distance.toString() + " meters");
 
-  mintRewards(ownerAddress);
+
+  const due: f64 = 
+    f64(ride_duration) * WEIGHT_DURATION + 
+    f64(ride_distance) * WEIGHT_DISTANCE;
+  
+  log("Due amount: " + due.toString());
+  log("Sending tokens to owner address...");
+  log("Token Contarct: " + TOKEN_CONTRACT_ADDRESS);
+
+  mintRewards(bike_owner, due.toString());
 
   return 0;
 }
 
-function verifyDeviceRegistered(id: string): void {
-  const deviceQuery = `SELECT is_active FROM "devices_registry" WHERE device_id = ?;`;
-  const res = QuerySQL(deviceQuery, [new String(id)]);
-
-  if (res == "") {
-    assert(false, "Device id not found in DB");
-  }
-}
-
-function findOwnerAddress(id: string): string {
-  const ownerAddrQuery = `SELECT owner_address FROM "device_binding" WHERE device_id = ?;`;
-  const res = QuerySQL(ownerAddrQuery, [new String(id)]);
-
-  if (res == "") {
-    assert(false, "Owner address not found in DB");
-  }
-
-  const ownerAddrObj = getPayloadValue(res);
-  validateField<JSON.Str>(ownerAddrObj, "owner_address");
-
-  const ownerAddr = getField<JSON.Str>(ownerAddrObj, "owner_address");
-  return ownerAddr!.valueOf();
-}
-
-function mintRewards(ownerAddress: string): void {
-  Log(`Minting ${TOKEN_AMOUNT} token to ${ownerAddress}`);
-  const txData = buildTxData(MINT_FUNCTION_ADDR, ownerAddress, TOKEN_AMOUNT);
+function mintRewards(ownerAddress: string, amount: string): void {
+  log(`Minting ${amount} tokens to ${ownerAddress}`);
+  const txData = buildTxData(MINT_FUNCTION_ADDR, ownerAddress, amount);
   const res = SendTx(CHAIN_ID, TOKEN_CONTRACT_ADDRESS, "0", txData);
-  Log("Send tx result:" + res);
+  log("Send tx result:" + res);
+}
+
+export function log(str: string): void {
+  // logs the line count and the message
+  Log(lineCount.toString() + ". " + str);
+  lineCount += 1;
 }
