@@ -9,5 +9,8 @@
   "type": "module",
   "keywords": [],
   "author": "",
-  "license": "ISC"
+  "license": "ISC",
+  "dependencies": {
+    "w3bstream-client-js": "^3.1.0"
+  }
 }
