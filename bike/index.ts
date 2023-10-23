@@ -1,13 +1,16 @@
 import { W3bstreamClient } from "w3bstream-client-js";
 
-const URL = "https://devnet-prod.w3bstream.com/api/w3bapp/event/eth_0x2c37a2cbcfaccdd0625b4e3151d6260149ee866b_bike_sharing";
-const API_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJQYXlsb2FkIjoiNjc3OTE5NDU0ODI3NDE4MCIsImlzcyI6InczYnN0cmVhbSJ9.ssPVNClndpg7SUJYmy8PwkGZyYsOKRWtUIONLWvoa4s";
+const URL = "COPY/PASTE FROM WS STUDIO PROJECT EVENTS TAB";
+const API_KEY = "CREATE ONE IN WS STUDIO ACCOUNT SETTINGS";
 
 const client = new W3bstreamClient(URL, API_KEY);
 
+// Create a WSHheader
+
+
 const header = {
-  deviceId: "bike_0012",
-  eventType: "NEW_RIDE",
+  device_id: "bike_001",
+  event_type: "RIDE_COMPLETED",
 };
 
 const payload = {
@@ -23,7 +26,7 @@ main();
 
 async function main() {
   try {
-    const res = await client.publish(header, Buffer.from(payload.data));
+    const res = await client.publishSingle(header, Buffer.from(payload.data));
 
     console.log("Response:");
     console.log(JSON.stringify(res.data, null, 2));
