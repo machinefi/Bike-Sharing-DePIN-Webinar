@@ -5,9 +5,6 @@ const API_KEY = "CREATE ONE IN WS STUDIO ACCOUNT SETTINGS";
 
 const client = new W3bstreamClient(URL, API_KEY);
 
-// Create a WSHheader
-
-
 const header = {
   device_id: "bike_001",
   event_type: "RIDE_COMPLETED",
