@@ -21,7 +21,7 @@ npm run asbuild
 - In the Project Settings tab, copy the operator address
 
 ```bash
-cd blockchain
+cd ../blockchain
 npx hardhat add-erc20-minter --address <YOUR_OPERATOR_ADDRESS>  --network testnet
 ```
 
