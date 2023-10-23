@@ -24,9 +24,8 @@ npm install
 npm run asbuild
 ```
 
-- Create a `bike_sharing` project on devnet.w3bstream.com
-- Import applet/release.wasm
-- In the Project Settings tab, copy the operator address
+- Create a `bike_sharing` project on devnet.w3bstream.com and import `applet/release.wasm`
+- In the Project Settings tab, copy the operator address (here you can also update the WASM file if you make changes to the applet)
 
 ```bash
 cd ../blockchain
