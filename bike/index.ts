@@ -10,6 +10,7 @@ const header = {
   event_type: "RIDE_COMPLETED",
 };
 
+// Set your wallet address as the bike owner
 const payload = {
   data: `{
         "bike_owner": "0x2C37a2cBcFacCdD0625b4E3151d6260149eE866B",
