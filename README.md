@@ -18,13 +18,7 @@ npm run asbuild
 
 - Create a `bike_sharing` project on devnet.w3bstream.com
 - Import applet/release.wasm
-  
-```bash
-cd ../bike
-npm install
-```
-
-- In the Settings tab, copy the operator address
+  - In the Settings tab, copy the operator address
 
 ```bash
 cd blockchain
@@ -32,6 +26,12 @@ npx hardhat add-erc20-minter --address <YOUR_OPERATOR_ADDRESS>  --network testne
 ```
 
 - In your W3bstream account settings, create an API Key and call it `bike_company`, make sure it has read/write permissions for the **Event** item and copy the Key
+
+```bash
+cd ../bike
+npm install
+```
+
 - edit index.ts, set the API Key and save
 
 ```bash
