@@ -25,14 +25,14 @@ cd ../blockchain
 npx hardhat add-erc20-minter --address <YOUR_OPERATOR_ADDRESS>  --network testnet
 ```
 
-- In your W3bstream account settings, create an API Key and call it `bike_company`, make sure it has read/write permissions for the **Event** item and copy the Key
-
 ```bash
 cd ../bike
 npm install
 ```
-
-- edit index.ts, set the API Key and save
+- In your W3bstream account settings, create an API Key and call it `bike_company`, make sure it has read/write permissions for the **Event** item and copy the Key
+- edit index.ts, set the API Key
+- In your W3bstream Project Events page, copy the HTTP route
+- edit index.ts, set the route
 
 ```bash
 tsc && node dist/index.js
