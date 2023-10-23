@@ -9,7 +9,15 @@ npx hardhat deploy --network testnet
 ```
 
 - Copy the token contract address and import it into Metamask to be able to check the balance
+- Edit `../applet/assembly/handlers/erc20.ts` and set the token contract address 
 
+```
+// erc20.ts
+...
+const TOKEN_CONTRACT_ADDRESS = "0x12345...ABC";
+...
+```
+  
 ```
 cd ../applet
 npm install
