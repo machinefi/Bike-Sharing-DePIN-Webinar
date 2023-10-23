@@ -18,7 +18,7 @@ npm run asbuild
 
 - Create a `bike_sharing` project on devnet.w3bstream.com
 - Import applet/release.wasm
-- In the Settings tab, copy the operator address
+- In the Project Settings tab, copy the operator address
 
 ```bash
 cd blockchain
