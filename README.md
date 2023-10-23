@@ -25,6 +25,8 @@ cd ../blockchain
 npx hardhat add-erc20-minter --address <YOUR_OPERATOR_ADDRESS>  --network testnet
 ```
 
+- Fund the Project operator address with some test IOTX tokens (get some from your IoTeX Developer Dashboard on https://developers.iotex.io)
+
 ```bash
 cd ../bike
 npm install
