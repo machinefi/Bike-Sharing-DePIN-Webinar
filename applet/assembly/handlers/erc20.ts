@@ -5,7 +5,7 @@ import { getIntegerField, getPayloadValue, getStringField } from "../utils/paylo
 
 const MINT_FUNCTION_ADDR = "40c10f19";
 const CHAIN_ID = 4690;
-const TOKEN_CONTRACT_ADDRESS = "0xaDDda062F058f943721590B90Fc7219fbB7CDc9d";
+const TOKEN_CONTRACT_ADDRESS = "TOKEN CONTRACT ADDRESS";
 const WEIGHT_DISTANCE = 0.001; // Pay 1 token every 1km
 const WEIGHT_DURATION = 0.005; // Pay 1 token every 3 minutes
 
