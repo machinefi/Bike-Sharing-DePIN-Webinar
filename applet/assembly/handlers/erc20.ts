@@ -1,4 +1,4 @@
-import { GetDataByRID, Log, SendTx } from "@w3bstream/wasm-sdk";
+import { GetDataByRID, Log, SendTx, CallContract } from "@w3bstream/wasm-sdk";
 
 import { buildTxData } from "../utils/build-tx";
 import { getIntegerField, getPayloadValue, getStringField } from "../utils/payload-parser";
@@ -6,6 +6,7 @@ import { getIntegerField, getPayloadValue, getStringField } from "../utils/paylo
 // Set the token contract address. This is the address of the dapp's token, 
 // which is used for paying rides and rewarding bike owners
 const TOKEN_CONTRACT_ADDRESS = "TOKEN CONTRACT ADDRESS";
+const BIKES_CONTRACT = "BIKES NFT CONTRACT ADDRESS";
 
 const MINT_FUNCTION_ADDR = "40c10f19";
 const CHAIN_ID = 4690;
@@ -32,13 +33,13 @@ export function handle_data(rid: i32): i32 {
   
   const payload = getPayloadValue(deviceMessage);
 
-  const bike_owner = getStringField(payload, "bike_owner");
+  const bike_id = getStringField(payload, "bike_id");
   const ride_start = getStringField(payload, "ride_start");
   const ride_duration = getIntegerField(payload, "ride_duration");
   const ride_distance = getIntegerField(payload, "ride_distance");
 
   if (
-    bike_owner === null || 
+    bike_id === null || 
     ride_start === null || 
     ride_duration === null || 
     ride_distance === null) {
@@ -46,7 +47,7 @@ export function handle_data(rid: i32): i32 {
     return 1;
   }
 
-  log("Bike owner address: " + bike_owner);
+  log("Bike id: " + bike_id);
   log("Ride start: " + ride_start);
   log("Ride duration: " + ride_duration.toString() + " seconds")
   log("Ride distance: " + ride_distance.toString() + " meters");
@@ -60,10 +61,23 @@ export function handle_data(rid: i32): i32 {
   log("Sending tokens to owner address...");
   log("Token Contarct: " + TOKEN_CONTRACT_ADDRESS);
 
+  let bike_owner = getBikeOwner(bike_id);
+
   mintRewards(bike_owner, due.toString());
 
   return 0;
 }
+
+// Reads the bike owner address from the blockchain
+function getBikeOwner(bikeId: string): string {
+  log("Getting bike owner...");
+  let owner = CallContract(4690, BIKES_CONTRACT, "6352211e" + bikeId, );
+  // Take the last 40 characters of the result
+  owner = owner.slice(owner.length - 40, owner.length);
+  log("Owner: 0x" + owner);
+  return owner;
+}
+
 
 function mintRewards(ownerAddress: string, amount: string): void {
   log(`Minting ${amount} tokens to ${ownerAddress}`);
