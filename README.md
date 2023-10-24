@@ -1,64 +1,13 @@
-# Episode #1
+# Episode #2
 
-```bash
-git clone https://github.com/simonerom/bike-sharing && cd bike-sharing
-cd blockchain
-npm install
-echo IOTEX_PRIVATE_KEY=0x... > .env
-npx hardhat deploy --network testnet
-```
+In the previous episode, the bike owner's address was embedded into the bike data message. While this method could be easily implemented through ownership settings in the bike-sharing mobile app, such as through Bluetooth, it has limitations. For example, it restricts Web3 composability, and the owner must have physical access to the bike to change ownership.
 
-- Copy the token contract address and import it into Metamask to be able to check the balance
-- Edit `../applet/assembly/handlers/erc20.ts` and set the token contract address 
+In this episode, we aim to manage bike owners in a more flexible manner by recording ownership information in a blockchain contract. Each manufactured bike will be registered on the blockchain in a dedicated device registry contract. Consequently, every time a bike sends data to our W3bstream prover, it will have to include its unique device ID. The applet will retrieve the current owner's information from the blockchain registry to determine where to send the payments for that bike. If an owner wishes to sell their bike, they can interact with the "ownership" smart contract through the bike app to transfer ownership.
 
-```js
-// erc20.ts
-...
-const TOKEN_CONTRACT_ADDRESS = "0x12345...ABC";
-...
-```
-  
-```
-cd ../applet
-npm install
-npm run asbuild
-```
+Let's outline the changes to the project below:
 
-- Create a `bike_sharing` project on devnet.w3bstream.com and import `applet/release.wasm`
-- In the Project Settings tab, copy the operator address (here you can also update the WASM file if you make changes to the applet)
+1. Each bike should be assigned a unique ID, which we will generate as a public/private key pair, using the public key as the bike's unique identifier.
+2. We will create a DeviceRegistry contract where the project owner will list the unique IDs of each manufactured bike.
+3. A DeviceBinding contract will be established to map each bike's unique ID to the wallet address of its owner.
+4. We will modify the W3bstream Applet to retrieve the owner for a particular bike to determine the recipient of the payment upon completing a ride.
 
-```bash
-cd ../blockchain
-npx hardhat add-erc20-minter --address <YOUR_OPERATOR_ADDRESS>  --network testnet
-```
-
-- Fund the Project operator address with some test IOTX tokens (get some from your IoTeX Developer Dashboard on https://developers.iotex.io)
-
-```bash
-cd ../bike
-npm install
-```
-- In your W3bstream account settings, create an API Key and call it `bike_company`, make sure it has read/write permissions for the **Event** item and copy the Key
-- Edit `index.ts`, set the API Key
-- In your W3bstream Project Events page, copy the HTTP route
-- Edit `index.ts` again, set the route and set your wallet address as the bike owner in the message payload:
-
-```js
-...
-// Set your wallet address as the bike owner address
-const payload = {
-  data: `{
-        "bike_owner": "0x2C37a2cBcFacCdD0625b4E3151d6260149eE866B",
-        "ride_start": "${Date.now()}",
-        "ride_duration": 3620,
-        "ride_distance": 1500
-        }`,
-...
-```
-
-```bash
-tsc && node dist/index.js
-```
-
-- Check the Log section on WS Studio
-- Check the token balance in Metamask
