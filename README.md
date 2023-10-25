@@ -42,7 +42,21 @@ contract Bikes is ERC721, Ownable {
 ```
 
 - Add the deploy script
+```js
+module.exports = async ({ getNamedAccounts, deployments }) => {
+  const { deploy } = deployments;
+  const { deployer } = await getNamedAccounts();
 
+  const tx = await deploy("Bikes", {
+    from: deployer,
+    args: [],
+    log: true,
+  });
+
+  console.log("Bikes NFT deployed at block: ", tx.receipt.blockNumber);
+};
+module.exports.tags = ["Token"];
+```
 
 - Add a mint bike hardhat task and include it into index.js (clone add-minter-role)
 ```js
