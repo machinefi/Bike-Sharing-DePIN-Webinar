@@ -172,7 +172,28 @@ export function log(str: string): void {
 
 Edit the bike simulator
 
-```
+```js
+import { W3bstreamClient } from "w3bstream-client-js";
 
+const URL = "https://devnet-prod-api.w3bstream.com/event/eth_0x4c123380ca640a146d803f844e0d9c90b52c5c97_bike_sharing";
+const API_KEY = "w3b_MV8xNjk4MjMyNzQ5X28uIWVXTUxTKz0zLw";
+
+const client = new W3bstreamClient(URL, API_KEY);
+
+const header = {
+  device_id: "bike_001",
+  event_type: "RIDE_COMPLETED",
+};
+
+// Set your wallet address as the bike owner
+const payload = {
+  data: `{
+        "bike_id": "0x2300ee8d4d4661138be2c7a3a0497086fcdd2aba94f5b9dcfb9169f497024e35",
+        "ride_start": "${Date.now()}",
+        "ride_duration": 3620,
+        "ride_distance": 1500
+        }`,
+};
+```
 
 
