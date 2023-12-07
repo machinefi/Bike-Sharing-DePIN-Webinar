@@ -14,7 +14,7 @@ Let's outline the changes to the project below:
 6. Finally, we will modify the bike simulator to remove the owner address from the message and include the bike_id instead.
 
 ## Step 1: Create the Bikes NFT Contract
-```solifity
+```solidity
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.0;
 
