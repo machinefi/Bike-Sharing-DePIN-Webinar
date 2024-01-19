@@ -1,9 +1,11 @@
 # Episode #4
-"In this 4th episode of the series, we have crafted a special example to explore generating ZK proofs using W3bstream, and deploying them on the Linea blockchain as the dApp layer where the DePIN contracts are housed.
+In this 4th episode of the series, we have crafted a special example to explore generating ZK proofs using W3bstream, and deploying them on the Linea blockchain as the dApp layer where the DePIN contracts are housed.
 
 This episode is a 'Linea Special' and is divided into two parts. In this first part, we describe the demo and implement the smart contracts on the Linea Goerli Testnet. The second part will focus on implementing the prover on the IoTeX W3bstream layer and integrating everything.
 
-## Part 1: deploy contracts
+Stay tuned for the next part!
+
+## Part 1: deploy contracts on Linea
 
 ### Setup
 
