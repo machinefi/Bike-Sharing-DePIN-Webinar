@@ -1,13 +1,12 @@
-applet/node_modules
-applet/build
+Linea/node_modules
+Linea/artifacts
+Linea/cache
+Linea/deployments/
+Linea/deployments.json
 
-blockchain/node_modules
-blockchain/artifacts
-blockchain/cache
-blockchain/deployments
-blockchain/deployments.json
+W3bstream/RISC0/target
+W3bstream/RISC0/method/guest/target
 
-bike/node_modules
 bike/dist
 
 **/.env
